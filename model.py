@@ -64,13 +64,13 @@ class Price:
         pass
 
     def get_frequent_renter_points(self, days_rented: int) -> int:
-        # Comportamento padrão: 1 ponto por aluguel
         return 1
 
 
 class RegularPrice(Price):
     def get_charge(self, days_rented: int) -> float:
-        amount = 2.0
+        # CORREÇÃO: Usar 2 em vez de 2.0
+        amount = 2
         if days_rented > 2:
             amount += (days_rented - 2) * 1.5
         return amount
@@ -78,10 +78,10 @@ class RegularPrice(Price):
 
 class NewReleasePrice(Price):
     def get_charge(self, days_rented: int) -> float:
-        return float(days_rented * 3)
+        # CORREÇÃO: Remover a conversão para float()
+        return days_rented * 3
 
     def get_frequent_renter_points(self, days_rented: int) -> int:
-        # Sobrescreve o comportamento padrão para adicionar bônus
         if days_rented > 1:
             return 2
         return 1
