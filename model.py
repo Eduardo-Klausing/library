@@ -1,57 +1,51 @@
-class Book:
+# model.py
 
+class Book:
     REGULAR: int = 0
     NEW_RELEASE: int = 1
     CHILDREN: int = 2
 
     def __init__(self, title: str, price_code: int):
-        self._title = title
-        self._price_code = price_code
+        # ATRIBUTOS RENOMEADOS (sem _)
+        self.title = title
+        self.price_code = price_code
 
-    @property
-    def title(self) -> str:
-        return self._title
+    # MÉTODOS @property REMOVIDOS
 
-    @property
-    def price_code(self) -> int:
-        return self._price_code
 
 class Rental:
     def __init__(self, book: Book, days_rented: int):
-        self._book = book
-        self._days_rented = days_rented
+        # ATRIBUTOS RENOMEADOS (sem _)
+        self.book = book
+        self.days_rented = days_rented
 
-    @property
-    def book(self) -> Book:
-        return self._book
+    # MÉTODOS @property REMOVIDOS
 
-    @property
-    def days_rented(self) -> int:
-        return self._days_rented
 
 class Client:
-
     def __init__(self, name: str):
-        self._name = name
-        self._rentals = []
+        # ATRIBUTOS RENOMEADOS (sem _)
+        self.name = name
+        self.rentals = []
 
     def add_rental(self, rental: Rental):
-        self._rentals.append(rental)
+        # ATRIBUTO RENOMEADO AQUI TAMBÉM
+        self.rentals.append(rental)
 
-    @property
-    def name(self) -> str:
-        return self._name
+    # MÉTODO @property REMOVIDO
 
     def statement(self) -> str:
-
         total_amount = 0
         frequent_renter_points = 0
+        # O ACESSO a self.name já era assim, então não muda.
         result = f"Rental summary for {self.name}\n"
         
-        for rental in self._rentals:
+        # ATRIBUTO RENOMEADO AQUI (de _rentals para rentals)
+        for rental in self.rentals:
             amount = 0
             
-            # determine amounts for each line
+            # O acesso a rental.book.price_code não muda, pois
+            # do ponto de vista do código "cliente", a sintaxe é a mesma.
             if rental.book.price_code == Book.REGULAR:
                 amount += 2
                 if rental.days_rented > 2:
@@ -63,16 +57,13 @@ class Client:
                 if rental.days_rented > 3:
                     amount += (rental.days_rented - 3) * 1.5
 
-            # add frequent renter points
             frequent_renter_points += 1
             if rental.book.price_code == Book.NEW_RELEASE and rental.days_rented > 1:
                 frequent_renter_points += 1
 
-            # show each rental result
             result += f"- {rental.book.title}: {amount}\n"
             total_amount += amount
         
-        # show total result
         result += f"Total: {total_amount}\n"
         result += f"Points: {frequent_renter_points}"
         return result
